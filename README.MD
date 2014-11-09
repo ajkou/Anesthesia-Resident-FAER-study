@@ -8,20 +8,26 @@ Primary outcome: Skill test scores (AssessmentTool[0-18], Global[1-5])
 ####Basic Stat Description
 
                       Control Intervension
-n                          14           14
-Age                     29.21        28.71
-Gender.Ratio (M/F)       0.50         0.36
-AnesExperience           8.54         8.07
-%PreviousUSLines         100%         100%
-PreviousUSLinesn        21.93        25.07
-%PreviousPNB              50%          36%
-PreviousPNBn             1.64         0.79
-%PreviousObsPNB           93%          71%
-PreviousObsPNBn          6.71         4.14
-%PreviousSimPNB           21%          14%
-%PreviousDidacPNB         21%          29%
-TimeSpentinSimPrac.s.  565.02      2823.69
-TimeuntilRetention.d.   85.57       100.00
+	n                          14           14
+	Age                     29.21        28.71
+	Gender.Ratio (M/F)       0.50         0.36
+	AnesExperience           8.54         8.07
+	%PreviousUSLines         100%         100%
+	PreviousUSLinesn        21.93        25.07
+	%PreviousPNB              50%          36%
+	PreviousPNBn             1.64         0.79
+	%PreviousObsPNB           93%          71%
+	PreviousObsPNBn          6.71         4.14
+	%PreviousSimPNB           21%          14%
+	%PreviousDidacPNB         21%          29%
+	TimeSpentinSimPrac.s.  565.02      2823.69
+	TimeuntilRetention.d.   85.57       100.00
+
+Confidence Over Time Periods
+
+![alt tag](https://raw.githubusercontent.com/ajkou/Anesthesia-Resident-FAER-Study/master/2.5%20confidsegments.png)
+
+![alt tag](https://raw.githubusercontent.com/ajkou/Anesthesia-Resident-FAER-Study/master/1%20videoscoreitems.png)
 
 ![alt tag](https://raw.githubusercontent.com/ajkou/Anesthesia-Resident-FAER-Study/master/1%20videoscoreitems.png)
 
