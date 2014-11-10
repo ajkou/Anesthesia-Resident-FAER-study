@@ -19,7 +19,7 @@ survey <- read.table("SURVEY.txt", header=T, sep="\t")
 	aggregate(apply(demog, 2, as.numeric), by=list(demog$Group), mean)
 	x <- aggregate(apply(demog[demog$Trial=="Pre",], 2, as.numeric), by=list(demog[demog$Trial=="Pre",]$Group), mean)
 	x.1 <- data.frame(t(x))
-	colnames(x.1) <- c("Control","Intervension")
+	colnames(x.1) <- c("Control","Intervention")
 	x.1 <- apply(x.1, 2, as.character)
 	x.1 <- apply(x.1, 2, as.numeric)
 	x.1 <- apply(x.1, 2, round, digits=2)
@@ -71,13 +71,26 @@ survey <- read.table("SURVEY.txt", header=T, sep="\t")
 		summary(lm(Post~  d+x  ))
 
 
-#T-tests between Intv and Cntl groups
+#Comparison Tests 
+	#T-tests between Intv and Cntl groups
 	t.test(video$TotalChecklistScore[video$Trial=="Ret" & video$Group=="c"],
 	video$TotalChecklistScore[video$Trial=="Ret" & video$Group=="i"],paired=TRUE)
 	t.test(video$TotalChecklistScore[video$Trial=="Post" & video$Group=="c"],
 	video$TotalChecklistScore[video$Trial=="Post" & video$Group=="i"],paired=TRUE)
 	t.test(video$TotalChecklistScore[video$Trial=="Pre" & video$Group=="c"],
 	video$TotalChecklistScore[video$Trial=="Pre" & video$Group=="i"],paired=TRUE)
+	
+	#Chi-sq tests of global score
+	chisq.test(table(video$Globalscore[video$Trial=="Ret"], video$Group[video$Trial=="Ret"]))
+	chisq.test(table(video$Globalscore[video$Trial=="Post"], video$Group[video$Trial=="Post"]))
+	chisq.test(table(video$Globalscore[video$Trial=="Pre"], video$Group[video$Trial=="Pre"]))
+
+	#Chi-sq tests of confidence statement
+	chisq.test(table(survey$PNBConfid[survey$Trial=="Ret"], survey$Group[survey$Trial=="Ret"]))
+	chisq.test(table(survey$PNBConfid[survey$Trial=="Post"], survey$Group[survey$Trial=="Post"]))
+	chisq.test(table(survey$PNBConfid[survey$Trial=="Pre"], survey$Group[survey$Trial=="Pre"]))
+		#3 time points
+		chisq.test(table(survey$PNBConfid, survey$Trial))
 
 #Barplot of Cntl/Intv.Pre/Post/Ret
 	par(mfrow=c(1,2))
@@ -153,4 +166,10 @@ survey <- read.table("SURVEY.txt", header=T, sep="\t")
 	data.ICC <- cbind(subset(video["TotalChecklistScore"], video$Reviewer==1 & video$Trial=="Ret"),subset(video["TotalChecklistScore"], video$Reviewer==2  & video$Trial=="Ret"))
 	colnames(data.ICC) <- c("Rater1", "Rater2")
 	ICC(data.ICC)
+
+#TukeyHSD for checklistscore
+	dh <- as.numeric(as.character(survey$TotalChecklistScore))
+	fm1 <- aov(dh ~ survey$Group + survey$Trial)
+	summary(fm1)
+	TukeyHSD(fm1, ordered = TRUE)
 
