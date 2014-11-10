@@ -74,7 +74,7 @@ Unpaired t-tests between groups i and c across the 3 time points test for a diff
 	mean of x mean of y 
 	 11.96429  13.25000 
 
-The 2-group tests using the global score produced a similar result. I chose to evauluate the Global scores as interval data [1-5] and compare their proportions using a 5x5 chi square test. The results of this test using the global score is the same as the video checklist results.
+The 2-group tests using the global score produced a similar result. I chose to evauluate the Global scores as interval data [1-5] and compare their proportions using a 5x2 chi square test. The results of this test using the global score are the same as the video checklist results.
 
         Pearson's Chi-squared test: Pre 
 	X-squared = 6.0171, df = 2, p-value = 0.04936
@@ -136,29 +136,31 @@ Which ICC type should we use?
     ICC2 and ICC3 remove mean differences between judges, but are sensitive to interactions of raters by judges. The difference between ICC2 and ICC3 is whether raters are seen as fixed or random effects.
     ICC1k, ICC2k, ICC3K reflect the means of k raters."
 
-All Video Scoring
-                         type  ICC  F df1 df2 p lower bound upper bound
-Single_fixed_raters      ICC3 0.90 19  83  83 0        0.85        0.93
+	All Video Scoring
+	type  ICC  F df1 df2 p lower bound upper bound
+	Single_fixed_raters      ICC3 0.90 19  83  83 0        0.85        0.93
 
-Pre Scores
-                         type  ICC F df1 df2       p lower bound upper bound
-Single_fixed_raters      ICC3 0.78 8  27  27 3.5e-07        0.57        0.89
+	Pre Scores
+	type  ICC F df1 df2       p lower bound upper bound
+	Single_fixed_raters      ICC3 0.78 8  27  27 3.5e-07        0.57        0.89
 
-Post Scores
-                         type  ICC   F df1 df2       p lower bound upper bound
-Single_fixed_raters      ICC3 0.70 5.7  27  27 1.1e-05        0.45        0.85
+	Post Scores
+	type  ICC   F df1 df2       p lower bound upper bound
+	Single_fixed_raters      ICC3 0.70 5.7  27  27 1.1e-05        0.45        0.85
 
-Ret Scores
-                         type  ICC   F df1 df2       p lower bound upper bound
-Single_fixed_raters      ICC3 0.71 6.0  27  27 7.3e-06        0.47        0.86
+	Ret Scores
+	type  ICC   F df1 df2       p lower bound upper bound
+	Single_fixed_raters      ICC3 0.71 6.0  27  27 7.3e-06        0.47        0.86
 
-Global Scores
-                         type  ICC   F df1 df2 p lower bound upper bound
-Single_fixed_raters      ICC3 0.78 8.0  83  83 0        0.68        0.85
+	Global Scores
+	type  ICC   F df1 df2 p lower bound upper bound
+	Single_fixed_raters      ICC3 0.78 8.0  83  83 0        0.68        0.85
+
+### Formal tests on Confidence Score groups
 
 Tukey's Range test on confidence
 
-What about evaulating checklistscore 2-ways by Trial[Pre,Post,Ret] and Group[i,c]? 2-way anova detects the clear difference seen earlier in Trial, but not Group. Within the Trials, Pre is distinguished from the other evaluations at Post and Ret. There is a plausible (p=0.14) difference between Post and Ret, but not a stat significant one.
+What about evaulating checklistscore by both Trial[Pre,Post,Ret] and Group[i,c]? 2-way anova detects the clear difference seen earlier in Trial, but not Group. Within the Trials, Pre is distinguished from the other evaluations at Post and Ret. There is a plausible (p=0.14) difference between Post and Ret, but not a stat significant one.
 
 	> summary(fm1)
              	Df Sum Sq Mean Sq F value  Pr(>F)    
@@ -167,7 +169,6 @@ What about evaulating checklistscore 2-ways by Trial[Pre,Post,Ret] and Group[i,c
 	Residuals    80 25.524   0.319                    
 	---
 	Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
-
 
   	Tukey multiple comparisons of means
     	95% family-wise confidence level
