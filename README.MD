@@ -57,7 +57,7 @@ Unpaired t-tests between groups i and c across the 3 time points test for a diff
  	4.821429  6.678571 
 
         Welch Two Sample t-test: Post
-t = -1.2552, df = 51.754, p-value = 0.215
+	t = -1.2552, df = 51.754, p-value = 0.215
 	alternative hypothesis: true difference in means is not equal to 0 
 	95 percent confidence interval:
 	 -2.0419244  0.4704958 
@@ -156,6 +156,8 @@ Global Scores
                          type  ICC   F df1 df2 p lower bound upper bound
 Single_fixed_raters      ICC3 0.78 8.0  83  83 0        0.68        0.85
 
+Tukey's Range test on confidence
+
 What about evaulating checklistscore 2-ways by Trial[Pre,Post,Ret] and Group[i,c]? 2-way anova detects the clear difference seen earlier in Trial, but not Group. Within the Trials, Pre is distinguished from the other evaluations at Post and Ret. There is a plausible (p=0.14) difference between Post and Ret, but not a stat significant one.
 
 	> summary(fm1)
@@ -163,7 +165,7 @@ What about evaulating checklistscore 2-ways by Trial[Pre,Post,Ret] and Group[i,c
 	survey$Group  1  0.298   0.298   0.933   0.337    
 	survey$Trial  2 13.738   6.869  21.530 3.3e-08 ***
 	Residuals    80 25.524   0.319                    
----
+	---
 	Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
 
 
@@ -200,4 +202,13 @@ RMANOVA does a triplet comparison of the confidence levels at the 3 time points 
 	---
 	Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
 
-Synopsis of Confidence Outcome: Confidence was measured on all 28 subjects on a 1-4 ordinal scale of [SD,D,A,SA]. Chi-squared tests comparing the proportions of these answers found no palpable difference between intervention and control. TukeyHSD (Tukey's range test) and RMANOVA for paired data found a difference between the assessment times [Pre, Post, Ret]. These findings are corroborated visually in the graph "2.5 confidsegments.png".
+The friedman rank test also tests for group differences [Pre,Post,Ret] and gives the same result.
+
+	> friedman.test(survey$PNBConfid,survey$Trial,survey$Participant)
+	
+        	Friedman rank sum test
+
+	data:  survey$PNBConfid, survey$Trial and survey$Participant 
+	Friedman chi-squared = 35.0909, df = 2, p-value = 2.399e-08
+
+Synopsis of Confidence Outcome: Confidence was measured on all 28 subjects on a 1-4 ordinal scale of [SD,D,A,SA]. Chi-squared tests comparing the proportions of these answers found no substantial difference between intervention and control. TukeyHSD (Tukey's range test) and RMANOVA for paired data both determined there was a difference in PNBConfid between the assessment times [Pre, Post, Ret]. Tukey's test indicates that although there is a possible difference (p-value=0.14), the disparity is not significant. These findings are corroborated visually in the graph "2.5 confidsegments.png".
