@@ -7,21 +7,21 @@ Primary outcome: Skill test scores (AssessmentTool[0-18], Global[1-5])
 
 ####Basic Stat Description
 
-                           Control Intervention
-	n                          14           14
-	Age                     29.21        28.71
-	Gender.Ratio (M/F)       0.50         0.36
-	AnesExperience           8.54         8.07
-	%PreviousUSLines         100%         100%
-	PreviousUSLinesn        21.93        25.07
-	%PreviousPNB              50%          36%
-	PreviousPNBn             1.64         0.79
-	%PreviousObsPNB           93%          71%
-	PreviousObsPNBn          6.71         4.14
-	%PreviousSimPNB           21%          14%
-	%PreviousDidacPNB         21%          29%
-	TimeSpentinSimPrac.s.  565.02      2823.69
-	TimeuntilRetention.d.   85.57       100.00
+				Control		Intervention		test
+n				14 			14 	
+Age				29.21 [26-35]		28.71 [27-31]		0.48
+Gender (M/F)			0.5 			0.36 			0.7
+AnesExperience		8.54 [4-20]		8.07 [3-19]		0.82
+PreviousUSLines		100% 			100% 			1
+PreviousUSLinesn		21.93 [ 5-100]	25.07 [ 1-100]	0.78
+PreviousPNB			50% 			36%			0.7
+PreviousPNBn			1.64 [0-5]		0.79 [0-5]		0.22
+PreviousObsPNB		93% 			71% 			0.32
+PreviousObsPNBn		6.71 [0-20]		4.14 [0-15]		0.17
+PreviousSimPNB		21% 			14% 			1
+PreviousDidacPNB		21% 			29% 			0.68
+TimeSpentinSimPrac.s.	565.02 [0-1507]	2823.69 [1607-4032]	<0.001
+TimeuntilRetention.d.	85.57 [42-116]	100 [52-133]		0.08
 
 Confidence Over Time Periods
 
@@ -74,6 +74,34 @@ Unpaired t-tests between groups i and c across the 3 time points test for a diff
 	mean of x mean of y 
 	 11.96429  13.25000 
 
+Paired t-tests for change scores between groups i and c across the 3 time points test for a difference in improvement. All 3 tests did not show difference in that improvement.
+
+		Paired t-test: Difference between Post and Pre
+	t = 1.2384, df = 27, p-value = 0.2262
+	alternative hypothesis: true difference in means is not equal to 0
+	95 percent confidence interval:
+	 -0.7037171  2.8465742
+	sample estimates:
+	mean of the differences 
+               	1.071429 
+
+		Paired t-test: Difference between Ret and Post
+	t = -0.5857, df = 27, p-value = 0.563
+	alternative hypothesis: true difference in means is not equal to 0
+	95 percent confidence interval:
+	 -2.251687  1.251687
+	sample estimates:
+	mean of the differences 
+                   	-0.5 
+
+		Paired t-test: Difference between Ret and Pre
+	t = 0.5144, df = 27, p-value = 0.6111
+	alternative hypothesis: true difference in means is not equal to 0
+	95 percent confidence interval:
+	 -1.707801  2.850659
+	sample estimates:
+	mean of the differences 
+              	0.5714286 
 The 2-group tests using the global score produced a similar result. I chose to evauluate the Global scores as interval data [1-5] and compare their proportions using a 5x2 chi square test. The results of this test using the global score are the same as the video checklist results.
 
         Pearson's Chi-squared test: Pre 
@@ -213,3 +241,13 @@ The friedman rank test also tests for group differences [Pre,Post,Ret] and gives
 	Friedman chi-squared = 35.0909, df = 2, p-value = 2.399e-08
 
 Synopsis of Confidence Outcome: Confidence was measured on all 28 subjects on a 1-4 ordinal scale of [SD,D,A,SA]. Chi-squared tests comparing the proportions of these answers found no substantial difference between intervention and control. TukeyHSD (Tukey's range test) and RMANOVA for paired data both determined there was a difference in PNBConfid between the assessment times [Pre, Post, Ret]. Tukey's test indicates that although there is a possible difference (p-value=0.14), the disparity is not significant. These findings are corroborated visually in the graph "2.5 confidsegments.png".
+
+###Comparing checklist score and global score
+
+Comparing 2 scales can be done by converting data to ranks, rescaling, or using the correlation coeff. Spearman rank correlation is appropriate to use here, as the data is best described here as ordinal data without meaningfull intervals (not interval data).
+
+	> cor(video$TotalChecklistScore, video$Globalscore, method="pearson")
+	[1] 0.8733169
+	
+	> cor(video$TotalChecklistScore, video$Globalscore, method="spearman")
+	[1] 0.8837453

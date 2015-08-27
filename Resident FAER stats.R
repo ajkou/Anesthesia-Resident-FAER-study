@@ -13,25 +13,71 @@ survey <- read.table("SURVEY.txt", header=T, sep="\t")
 	survey <- replace(apply(survey , 2, as.character), survey =="D",2)
 	survey <- replace(apply(survey , 2, as.character), survey =="A",3)
 	survey <- replace(apply(survey , 2, as.character), survey =="SA",4)
-	survey <- data.frame(survey )
-
+	survey <- data.frame(survey)
+	
+#Estimated power required for the study based on Udani 2014 Simulation based mastery learning; pooled variance used for effect size
+	pwr.t.test(d=(4.4-1.5)/mean(c(3.2, 1.9)), sig.level=0.05, power=0.8, type="paired", alternative="greater")
+	#Test that was used in paper
+	pwr.t.test(d=(4.4-1.5)/mean(c(3.2, 1.9)), sig.level=0.05, power=0.8, type="two.sample", alternative="two.sided")
+	
 #Pseudo descriptive statistics; searching for differences in subpops
-	aggregate(apply(demog, 2, as.numeric), by=list(demog$Group), mean)
-	x <- aggregate(apply(demog[demog$Trial=="Pre",], 2, as.numeric), by=list(demog[demog$Trial=="Pre",]$Group), mean)
-	x.1 <- data.frame(t(x))
-	colnames(x.1) <- c("Control","Intervention")
-	x.1 <- apply(x.1, 2, as.character)
-	x.1 <- apply(x.1, 2, as.numeric)
-	x.1 <- apply(x.1, 2, round, digits=2)
-	rownames(x.1) <- colnames(x)
+	group.c <- demog[demog$Trial=="Pre" & demog$Group=="c",]
+	group.i <- demog[demog$Trial=="Pre" & demog$Group=="i",]
+	mytable <- aggregate(apply(demog[demog$Trial=="Pre",], 2, as.numeric), by=list(demog[demog$Trial=="Pre",]$Group), mean)
+	mytable.1 <- data.frame(t(mytable))
+	mytable.1 <- apply(mytable.1, 2, as.character)
+	mytable.1 <- apply(mytable.1, 2, as.numeric)
+	mytable.1 <- apply(mytable.1, 2, round, digits=2)
+	#input ranges
+	mytable.range <- aggregate(apply(demog[demog$Trial=="Pre",], 2, as.numeric), by=list(demog[demog$Trial=="Pre",]$Group), range)
+	mytable.range1 <- paste("[", t(mytable.range[1,])[seq(8,33,2),], "-", t(mytable.range[1,])[seq(9,33,2),], "]", sep="")
+	mytable.range2 <- paste("[", t(mytable.range[2,])[seq(8,33,2),], "-", t(mytable.range[2,])[seq(9,33,2),], "]",  sep="")
+	#input tests
+	mytable.ttests <- NULL
+	for (i in 4:ncol(demog)) {
+	    myx <- try(t.test(as.numeric(as.character(demog[demog$Trial=="Pre" & demog$Group=="c",i])), as.numeric(as.character(demog[demog$Trial=="Pre" & demog$Group=="i",i]))), silent=T)
+	    if (class(myx)!="try-error") {
+	      if (names(demog)[i]=="Gender" | names(demog)[i]=="PreviousUSLines" | names(demog)[i]=="PreviousPNB" | names(demog)[i]=="PreviousObsPNB" | names(demog)[i]=="PreviousSimPNB") {
+	        mytable.ttests <- c(mytable.ttests, prop.test(cbind(table(group.c[,i]), table(group.i[,i])), correct=T)[[3]])
+	      } else {
+	        mytable.ttests <- c(mytable.ttests, t.test(as.numeric(as.character(group.c[,i])), as.numeric(as.character(group.i[,i])))[[3]])
+	      }	    
+	    } else {
+	      mytable.ttests <- c(mytable.ttests, 1)
+	    }
+	}
+	mytable.ttests <- round(mytable.ttests, 2)
+	mytable.1 <- cbind(mytable.1[5:17,1], mytable.range1, mytable.1[5:17,2], mytable.range2, mytable.ttests)
+	mytable.1 <- rbind(c(nrow(group.c), "-", nrow(group.i), "-", "-"), mytable.1)
+	colnames(mytable.1) <- c("Control", "range", "Intervention", "range", "test")
+	rownames(mytable.1) <- c("n", colnames(mytable)[5:length(mytable)])
+	mytable.1
+	
+	#Other aggregations
 	aggregate(apply(video, 2, as.numeric), by=list(video$Group), mean)
 	aggregate(apply(video, 2, as.numeric), by=list(video$Trial), mean)
-	aggregate( TotalChecklistScore~Trial+Group, video, mean )
-	aggregate( TotalChecklistScore~Reviewer+Trial, video, mean )
-
+	aggregate(TotalChecklistScore~Trial+Group, video, mean )
+	aggregate(TotalChecklistScore~Reviewer+Trial, video, mean )
 	aggregate(apply(survey , 2, as.numeric), by=list(survey$Group), mean)
 	aggregate(apply(survey , 2, as.numeric), by=list(survey$Trial), mean)
+	
+	#difference in score to compare by paired t-test; Post is used to flag i/c as the repeated measures are row assorted
+	#Post-Pre
+	scorediff <- video$TotalChecklistScore[video$Trial=="Post"] - video$TotalChecklistScore[video$Trial=="Pre"]
+	aggregate(scorediff, by=list(video$Group[video$Trial=="Post"]), mean )
+	t.test(scorediff[video$Group[video$Trial=="Post"]=="c"], scorediff[video$Group[video$Trial=="Post"]=="i"], paired=T)
+  #Ret-Post
+	scorediff <- video$TotalChecklistScore[video$Trial=="Ret"] - video$TotalChecklistScore[video$Trial=="Post"]
+	aggregate(scorediff, by=list(video$Group[video$Trial=="Post"]), mean )
+	t.test(scorediff[video$Group[video$Trial=="Post"]=="c"], scorediff[video$Group[video$Trial=="Post"]=="i"], paired=T)
+	#Ret-Pre
+	scorediff <- video$TotalChecklistScore[video$Trial=="Ret"] - video$TotalChecklistScore[video$Trial=="Pre"]
+	aggregate(scorediff, by=list(video$Group[video$Trial=="Post"]), mean )
+	t.test(scorediff[video$Group[video$Trial=="Post"]=="c"], scorediff[video$Group[video$Trial=="Post"]=="i"], paired=T)
+	
 
+
+	
 #Histograms of score dist
 	hist(video$TotalChecklistScore[video$Trial=="Ret"])
 	hist(video$TotalChecklistScore[video$Trial=="Post"])
@@ -74,17 +120,18 @@ survey <- read.table("SURVEY.txt", header=T, sep="\t")
 #Comparison Tests 
 	#T-tests between Intv and Cntl groups
 	t.test(video$TotalChecklistScore[video$Trial=="Ret" & video$Group=="c"],
-	video$TotalChecklistScore[video$Trial=="Ret" & video$Group=="i"],paired=TRUE)
+	video$TotalChecklistScore[video$Trial=="Ret" & video$Group=="i"],paired=F)
 	t.test(video$TotalChecklistScore[video$Trial=="Post" & video$Group=="c"],
-	video$TotalChecklistScore[video$Trial=="Post" & video$Group=="i"],paired=TRUE)
+	video$TotalChecklistScore[video$Trial=="Post" & video$Group=="i"],paired=F)
 	t.test(video$TotalChecklistScore[video$Trial=="Pre" & video$Group=="c"],
-	video$TotalChecklistScore[video$Trial=="Pre" & video$Group=="i"],paired=TRUE)
+	video$TotalChecklistScore[video$Trial=="Pre" & video$Group=="i"],paired=F)
 	
 	#Chi-sq tests of global score
 	chisq.test(table(video$Globalscore[video$Trial=="Ret"], video$Group[video$Trial=="Ret"]))
 	chisq.test(table(video$Globalscore[video$Trial=="Post"], video$Group[video$Trial=="Post"]))
 	chisq.test(table(video$Globalscore[video$Trial=="Pre"], video$Group[video$Trial=="Pre"]))
-
+		#3 time points
+		chisq.test(table(video$Globalscore, video$Trial))
 	#Chi-sq tests of confidence statement
 	chisq.test(table(survey$PNBConfid[survey$Trial=="Ret"], survey$Group[survey$Trial=="Ret"]))
 	chisq.test(table(survey$PNBConfid[survey$Trial=="Post"], survey$Group[survey$Trial=="Post"]))
@@ -172,4 +219,16 @@ survey <- read.table("SURVEY.txt", header=T, sep="\t")
 	fm1 <- aov(dh ~ survey$Group + survey$Trial)
 	summary(fm1)
 	TukeyHSD(fm1, ordered = TRUE)
+
+#Friedman non parametric test of confidence
+	friedman.test(survey$PNBConfid,survey$Trial,survey$Participant)
+
+#RMANOVA of confidence level against group and trial; Group is a between subject variable
+	dh <- as.numeric(as.character(survey$PNBConfid))
+	summary(aov(dh~ (survey$Trial+survey$Group)+Error(survey$Participant)))
+
+#Scoring system comparison; correlation
+	cor(video$TotalChecklistScore, video$Globalscore, method="pearson")
+	cor(video$TotalChecklistScore, video$Globalscore, method="spearman")
+
 
