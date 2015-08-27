@@ -10,12 +10,12 @@ Primary outcome: Skill test scores (AssessmentTool[0-18], Global[1-5])
 	                   	Control        	Intervention			test p
 	n                    	14             	14 	
 	Age                  	29.21 [26-35]  	28.71 [27-31]			0.48
-	Gender (M/F)         	0.5            	0.36 	        			0.7
+	Gender (M/F)         	0.5            	0.36 	             	0.7
 	AnesExperience       	8.54 [4-20]    	8.07 [3-19]   			0.82
 	PreviousUSLines	    	100%           	100%            		1
 	PreviousUSLinesn    	21.93 [ 5-100] 	25.07 [ 1-100]			0.78
 	PreviousPNB          	50%            	36%           			0.7
-	PreviousPNBn         	1.64 [0-5]	     	0.79 [0-5]   			0.22
+	PreviousPNBn         	1.64 [0-5]	     	0.79 [0-5]       	0.22
 	PreviousObsPNB      	93%            	71%          			0.32
 	PreviousObsPNBn     	6.71 [0-20]    	4.14 [0-15]  			0.17
 	PreviousSimPNB       	21%            	14%             		1
